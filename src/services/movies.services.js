@@ -1,6 +1,15 @@
+const { Op } = require('sequelize');
 const db = require('../database/models');
 
-const getAllMovies = async (limit, offset) => {
+const getAllMovies = async (limit, offset, keyword) => {
+/*El options sirve para obtener las peliculas por su titulo en el buscador*/
+    const options = keyword ? {
+        where: {
+            title: {
+                [Op.substring]: keyword
+            },
+        },
+    } : null
 
     try {
         const movies = await db.Movie.findAll({
@@ -22,9 +31,12 @@ const getAllMovies = async (limit, offset) => {
                 }
               },
 
-        ]
+        ],
+        ...options
         });
-        const count = await db.Movie.count();
+        const count = await db.Movie.count({
+            ...options
+        });
         
         return {
             movies,

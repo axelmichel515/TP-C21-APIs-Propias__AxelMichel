@@ -62,8 +62,7 @@ const storeGenre = async (dataGenre) =>{
 
         return await getGenreById(newGenre.id)
 
-
-        
+      
     } catch (error) {
         console.log(error);
         throw {
